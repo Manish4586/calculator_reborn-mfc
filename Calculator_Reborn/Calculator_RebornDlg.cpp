@@ -77,7 +77,8 @@ BEGIN_MESSAGE_MAP(CCalculator_RebornDlg, CDialogEx)
 	// Add By Manish4586 @20230921 for bg color
 	//ON_WM_ERASEBKGND()
 	//ON_WM_CTLCOLOR()
-	ON_CONTROL_RANGE(BN_CLICKED, IDC_BUTTON0, IDC_BUTTON9, OnButtonClicked)
+	ON_CONTROL_RANGE(BN_CLICKED, IDC_BUTTON1, IDC_BUTTON9, OnButtonClicked)
+	ON_BN_CLICKED(IDC_BUTTON0, &CCalculator_RebornDlg::OnBnClickedButton0)
 	ON_BN_CLICKED(IDC_BUTTONPLUS, &CCalculator_RebornDlg::OnBnClickedButtonPLUS)
 	ON_BN_CLICKED(IDC_BUTTONMIN, &CCalculator_RebornDlg::OnBnClickedButtonMIN)
 	ON_BN_CLICKED(IDC_BUTTONMUL, &CCalculator_RebornDlg::OnBnClickedButtonMUL)
@@ -178,16 +179,17 @@ HCURSOR CCalculator_RebornDlg::OnQueryDragIcon()
 }
 
 // Add for Calculator_Reborn @20230922
-
+// Reborn Edition of Normal test vriant calculator
+// expands the features of my test build calculator
+//here im trying to replicate this version with an actual calculator.
 void CCalculator_RebornDlg::OnButtonClicked(UINT nID)
 {
 	char ch = '0' + nID - IDC_BUTTON0;
 	if (flag == true)
 	{
-		if (result.GetLength()<=15)
+		if (st1.GetLength()<=15)
 		{
-
-	/*	if(result.Find(_T(".")))
+        /*	if(result.Find(_T(".")))
 		{
 			st1 = result +CString(ch);
 		}
@@ -204,24 +206,66 @@ void CCalculator_RebornDlg::OnButtonClicked(UINT nID)
 	}
 	else
 	{
-		/*if(result.Find(L"."))
+	if (st2.GetLength()<=15)
+		{
+			/*if(result.Find(L"."))
 		{
 			st2 = result + CString(ch);
 		}
 		else
 		{*/
-
-	if (result.GetLength()<=15)
-		{
 		st2 += CString(ch);
-		
 		//}
 		result = st2;
 	    }
 	else
 		{  	
-			AfxMessageBox(_T("NOOOOOO??")); 
+			AfxMessageBox(_T("sorry!!!")); 
 	    }
+	}
+	UpdateData(false);
+}
+
+// fix unnecessary zero @20230928
+void CCalculator_RebornDlg::OnBnClickedButton0()
+{
+	if (flag == true)
+	{ 
+ if (st1.GetLength()<=15)
+	{ 
+		if (st1!= _T("0"))
+		{
+		    st1 += _T("0");
+		}
+		else
+		{
+			st1 = _T("0");
+		}
+		result = st1;
+	}
+	else
+		{  	
+			AfxMessageBox(_T("Calculator ????")); 
+		}
+	}
+	else
+	{
+ if (st2.GetLength()<=15)
+	{
+		if (st2!= _T("0"))
+		{
+		    st2 += _T("0");
+		}
+		else
+		{
+			st2 = _T("0");
+	 }
+	}
+	 	else
+		{  	
+			AfxMessageBox(_T("no?")); 
+		}
+		result = st2;
 	}
 	UpdateData(false);
 }
@@ -264,6 +308,7 @@ void CCalculator_RebornDlg::OnBnClickedButtonMUL()
 		result.Format(_T("%0.f * "), num1); // Append " + " to the display string.
 		//E_result = _T("");
 	    op = 3;
+		
 	}
 		UpdateData(false);
 }
@@ -384,22 +429,55 @@ void CCalculator_RebornDlg::OnBnClickedButtonC()
 	UpdateData(false);
 }
 
+void a()
+{
+
+}
+
 // Add For Backspace @20230925
 void CCalculator_RebornDlg::OnBnClickedButtonBackSpace()
 {
+	if(op == 0)
+	{
 	if (!st1.IsEmpty())
 	{
 	st1= st1.Mid(0, st1.GetLength() -1);
 	num1 = _ttof(st1);
-	result.Format(_T("%0.f"), num1);
+	result.Format(_T("%.f"), num1);
 	}
-
+	}
+	else if(op ==1 || op ==2 || op ==3 || op ==4)
+	{
     if (!st2.IsEmpty())
 	{
 	st2= st2.Mid(0, st2.GetLength() -1);
 	num2 = _ttof(st2);
-	result.Format(_T("%0.f"), num2);
-	}
+	result.Format(_T("%.f"), num2);
+	if ((num2 == 0) && (op ==1 || op ==2 || op ==3 || op ==4))
+	 { 
+		num1 = _ttof(st1);
+		switch (op)
+		 {
+			case (1):
+		result.Format(_T("%.f +"), num1);
+		break;
+
+			case (2):
+		result.Format(_T("%.f -"), num1);
+		break;
+
+			case (3):
+		result.Format(_T("%.f *"), num1);
+		break;
+
+			case (4):
+		result.Format(_T("%.f /"), num1);
+		break;
+		 }
+
+       }
+    }
+}
  /*
  // Trying To adapt backspace for results @20230926
  if(result!= _T(""))
