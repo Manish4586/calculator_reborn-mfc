@@ -179,9 +179,10 @@ HCURSOR CCalculator_RebornDlg::OnQueryDragIcon()
 }
 
 // Add for Calculator_Reborn @20230922
-// Reborn Edition of Normal test vriant calculator
+// Reborn Edition of Normal test variant calculator
 // expands the features of my test build calculator
 //here im trying to replicate this version with an actual calculator.
+
 void CCalculator_RebornDlg::OnButtonClicked(UINT nID)
 {
 	char ch = '0' + nID - IDC_BUTTON0;
@@ -204,7 +205,7 @@ void CCalculator_RebornDlg::OnButtonClicked(UINT nID)
 			AfxMessageBox(_T("Calculator ????")); 
 		}
 	}
-	else
+	else if (flag == false)
 	{
 	if (st2.GetLength()<=15)
 		{
@@ -248,7 +249,7 @@ void CCalculator_RebornDlg::OnBnClickedButton0()
 			AfxMessageBox(_T("Calculator ????")); 
 		}
 	}
-	else
+	else if (flag == false)
 	{
  if (st2.GetLength()<=15)
 	{
@@ -272,7 +273,20 @@ void CCalculator_RebornDlg::OnBnClickedButton0()
 
 void CCalculator_RebornDlg::OnBnClickedButtonPLUS()
 {
-	if (result!= _T(""))
+	 /*if (!st1.IsEmpty() && !st2.IsEmpty())
+	{
+
+		num1 = _ttof(st1);
+		num2 = _ttof(st2);
+		num1 = num1 + num2;
+		
+	
+		result.Format(_T("%0.f "), num1);
+		num2 = num1 = 0;
+		st1 = _T("");
+		st2 = _T("");
+	 }
+	else */if (result!= _T(""))
 	{
 		num1 = _ttof(result);
 	    flag = !flag;
@@ -280,7 +294,9 @@ void CCalculator_RebornDlg::OnBnClickedButtonPLUS()
 		result.Format(_T("%0.f + "), num1); // Append " + " to the display string.
 		//E_result = _T("");
 	    op = 1;
+		//st1.Format(_T("%0.f +"), num1);
 	}
+	    
 		UpdateData(false);
 }
 
@@ -429,11 +445,6 @@ void CCalculator_RebornDlg::OnBnClickedButtonC()
 	UpdateData(false);
 }
 
-void a()
-{
-
-}
-
 // Add For Backspace @20230925
 void CCalculator_RebornDlg::OnBnClickedButtonBackSpace()
 {
@@ -446,6 +457,7 @@ void CCalculator_RebornDlg::OnBnClickedButtonBackSpace()
 	result.Format(_T("%.f"), num1);
 	}
 	}
+	//fixup backspace for second number @20230928
 	else if(op ==1 || op ==2 || op ==3 || op ==4)
 	{
     if (!st2.IsEmpty())
